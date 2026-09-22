@@ -1,72 +1,221 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HPTRADER</title>
+
 <style>
-*{box-sizing:border-box}body{margin:0;background:#090c10;color:#eef3f7;font-family:Inter,Arial,sans-serif}.app{display:flex;min-height:100vh}.sidebar{width:245px;background:#0d1117;border-right:1px solid #1b232b;padding:22px 16px;display:flex;flex-direction:column}.brand{display:flex;align-items:center;gap:11px;padding:5px 8px 30px}.logo{width:42px;height:42px;border-radius:12px;background:#13d987;color:#06110c;font-weight:900;display:grid;place-items:center;font-size:19px}.brand b{display:block;font-size:16px;letter-spacing:.7px}.brand small,.user small{display:block;color:#7d8995;font-size:10px;margin-top:3px}nav a,.sideBottom>a{display:flex;gap:13px;align-items:center;color:#8f9aa5;text-decoration:none;padding:13px 12px;border-radius:10px;margin:3px 0;font-size:14px}nav a svg,.sideBottom>a svg{width:18px}.active{background:#14231e;color:#16df8e!important}.sideBottom{margin-top:auto}.user{border-top:1px solid #1b232b;padding:18px 8px 5px;display:flex;gap:10px;align-items:center}.avatar{width:34px;height:34px;border-radius:50%;background:#182a23;color:#18db8b;display:grid;place-items:center;font-size:11px;font-weight:800}main{flex:1;min-width:0}header{height:72px;border-bottom:1px solid #1b232b;display:flex;align-items:center;justify-content:space-between;padding:0 30px}.search{display:flex;align-items:center;gap:9px;background:#10151b;border:1px solid #202a33;border-radius:9px;padding:9px 12px;width:330px}.search svg{width:17px;color:#71808c}.search input{background:none;border:0;outline:0;color:#fff;width:100%}.headRight{display:flex;gap:24px;align-items:center}.headRight>svg{color:#85919c}.balance small{display:block;color:#71808c;font-size:10px}.balance b{font-size:13px}.mobileMenu{display:none}.content{padding:28px 30px;max-width:1500px;margin:auto}.welcome{display:flex;justify-content:space-between;align-items:center;margin-bottom:23px}.welcome p{color:#7d8995;margin:0 0 5px;font-size:13px}.welcome h1{margin:0;font-size:25px}.deposit{background:#13d987;border:0;border-radius:8px;padding:11px 16px;font-weight:800;display:flex;gap:7px;align-items:center}.deposit svg{width:16px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:16px}.stats>div,.panel{background:#0e1319;border:1px solid #1c252d;border-radius:12px}.stats>div{padding:17px}.stats span{display:block;color:#778490;font-size:11px}.stats b{display:block;font-size:21px;margin:7px 0}.stats em{font-style:normal;font-size:11px;color:#74818c}.green{color:#16d98b!important}.red{color:#ff5a65!important}.grid{display:grid;grid-template-columns:1fr 300px;gap:15px}.panelHead,.panelTitle{display:flex;justify-content:space-between;align-items:center;padding:17px 18px}.muted{font-size:9px;color:#687580;letter-spacing:1px}.panel h2{font-size:16px;margin:4px 0 0}.panelHead select,.full{background:#11171d;color:#aeb8c1;border:1px solid #27313a;border-radius:7px;padding:8px}.chart{height:340px;margin:0 18px;position:relative;overflow:hidden;background:linear-gradient(180deg,#0e1419,#0b1015)}.gridlines{position:absolute;inset:0;background:linear-gradient(#182128 1px,transparent 1px),linear-gradient(90deg,#182128 1px,transparent 1px);background-size:100% 55px,90px 100%;opacity:.6}.chart svg{position:absolute;inset:0;width:100%;height:100%}.priceTag{position:absolute;right:5px;top:47px;background:#16d98b;color:#06120d;padding:4px 6px;font-size:10px;border-radius:3px}.chartFoot{display:flex;justify-content:space-between;color:#586570;font-size:9px;padding:9px 20px 15px}.orderPanel{padding:0 18px 18px}.tabs{display:flex;margin:0 -18px 20px}.tabs button{flex:1;padding:15px;background:#12181e;color:#798691;border:0;font-weight:800}.tabs .buyTab{background:#123d2d;color:#16d98b}.orderPanel label{display:block;color:#7e8a95;font-size:11px;margin:13px 0 7px}.inputRow{display:flex;border:1px solid #263039;border-radius:7px;overflow:hidden}.inputRow button{width:40px;background:#141a20;color:#9aa6b0;border:0}.inputRow input{flex:1;background:#0b1015;color:white;text-align:center;border:0;outline:0}.quick{display:flex;gap:5px;margin-top:7px}.quick button{flex:1;background:#151b21;color:#8d99a4;border:1px solid #252f37;border-radius:5px;padding:7px;font-size:10px}.full{width:100%;margin-bottom:14px}.quote{display:flex;justify-content:space-between;border-top:1px solid #202931;padding:14px 0;color:#798590;font-size:11px}.quote b{color:#16d98b}.tradeBtn{width:100%;background:#13d987;border:0;padding:13px;border-radius:7px;font-weight:900}.demoNote{text-align:center;color:#596570;font-size:9px}.lower{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:15px}.panelTitle{border-bottom:1px solid #1c252d}.panelTitle h3{margin:0;font-size:14px}.panelTitle button{background:none;border:0;color:#16d98b;font-size:11px}.market{width:100%;display:grid;grid-template-columns:35px 1fr 85px 60px;align-items:center;text-align:left;background:none;border:0;border-bottom:1px solid #171f26;color:#dce2e7;padding:11px 16px}.market.selected{background:#101b17}.marketIcon{width:27px;height:27px;border-radius:7px;background:#15211d;display:grid;place-items:center;color:#16d98b}.marketIcon svg{width:15px}.marketName{font-size:11px}.marketName small{display:block;color:#596570;font-size:9px;margin-top:2px}.market b{font-size:11px}.market em{font-size:10px;font-style:normal}.position{display:flex;justify-content:space-between;align-items:center;padding:14px 17px;border-bottom:1px solid #171f26}.position b{font-size:11px}.position small{display:block;color:#687581;font-size:9px;margin-top:4px}.position strong{font-size:12px}@media(max-width:850px){.sidebar{display:none}.mobileMenu{display:block;background:none;border:0;color:#9ba7b0}.content{padding:20px 14px}header{padding:0 14px}.search{width:45%;}.stats{grid-template-columns:1fr 1fr}.grid,.lower{grid-template-columns:1fr}.chart{height:280px}.headRight{gap:10px}.balance{display:none}}@media(max-width:520px){.search{display:none}.welcome h1{font-size:20px}.deposit{padding:9px 10px;font-size:11px}.stats b{font-size:17px}.stats>div{padding:13px}.chart{height:240px}.market{grid-template-columns:30px 1fr 70px 50px}}
-</style>
-</head>
-<body>
-<div id="root"></div>
-<script>
-const markets = [
-  ["Volatility 100 Index","1,284.62","+1.24%","up"],
-  ["Volatility 75 Index","842.18","+0.87%","up"],
-  ["Volatility 50 Index","512.44","-0.31%","down"],
-  ["Boom 1000 Index","1,942.08","+2.18%","up"],
-  ["Crash 1000 Index","1,106.72","-1.05%","down"]
-];
-const icons = { up:"↗", down:"↘" };
-let selected = markets[0][0];
-function render(){
-  document.getElementById("root").innerHTML = `
-  <div class="app">
-    <aside class="sidebar">
-      <div class="brand"><div class="logo">HP</div><div><b>HPTRADER</b><small>TRADING PLATFORM</small></div></div>
-      <nav>
-        <a class="active">▦ &nbsp; Dashboard</a><a>⌁ &nbsp; Markets</a><a>◈ &nbsp; Portfolio</a><a>◷ &nbsp; Trade History</a>
-      </nav>
-      <div class="sideBottom"><a>⚙ &nbsp; Settings</a><div class="user"><div class="avatar">HP</div><div><b>Demo Account</b><small>Paper Trading</small></div></div></div>
-    </aside>
-    <main>
-      <header><button class="mobileMenu">☰</button><div class="search">⌕ <input placeholder="Search markets"></div><div class="headRight"><span>♧</span><div class="balance"><small>Balance</small><b>$10,000.00</b></div></div></header>
-      <section class="content">
-        <div class="welcome"><div><p>Welcome back</p><h1>Trading Dashboard</h1></div><button class="deposit">＋ Add Funds</button></div>
-        <div class="stats">
-          <div><span>Account Balance</span><b>$10,000.00</b><em>Demo</em></div>
-          <div><span>Equity</span><b>$10,124.80</b><em class="green">+1.25%</em></div>
-          <div><span>Today's P&amp;L</span><b class="green">+$124.80</b><em class="green">+1.25%</em></div>
-          <div><span>Open Positions</span><b>3</b><em>Active</em></div>
-        </div>
-        <div class="grid">
-          <section class="panel chartPanel">
-            <div class="panelHead"><div><span class="muted">MARKET</span><h2>${selected}</h2></div><select><option>1 minute</option><option>5 minutes</option><option>15 minutes</option><option>1 hour</option></select></div>
-            <div class="chart"><div class="gridlines"></div><svg viewBox="0 0 900 380" preserveAspectRatio="none"><polyline points="0,290 60,270 120,300 180,240 240,255 300,210 360,230 420,175 480,205 540,145 600,175 660,120 720,150 780,90 840,115 900,55" fill="none" stroke="#16d98b" stroke-width="4"/><polyline points="0,320 120,305 240,290 360,270 480,245 600,210 720,180 840,130 900,110" fill="none" stroke="#16d98b" stroke-opacity=".18" stroke-width="30"/></svg><div class="priceTag">1,284.62</div></div>
-            <div class="chartFoot"><span>09:00</span><span>12:00</span><span>15:00</span><span>18:00</span><span>21:00</span></div>
-          </section>
-          <section class="panel orderPanel">
-            <div class="tabs"><button class="buyTab">BUY</button><button>SELL</button></div>
-            <label>Amount</label><div class="inputRow"><button>−</button><input value="10" readonly><button>＋</button></div>
-            <div class="quick"><button>$5</button><button>$10</button><button>$25</button><button>$50</button></div>
-            <label>Duration</label><select class="full"><option>1 minute</option><option>5 minutes</option><option>15 minutes</option></select>
-            <div class="quote"><span>Potential payout</span><b>$19.50</b></div><button class="tradeBtn">PLACE BUY TRADE</button><p class="demoNote">Paper trading mode — no real money is used.</p>
-          </section>
-        </div>
-        <div class="lower">
-          <section class="panel"><div class="panelTitle"><h3>Markets</h3><button>View all</button></div>
-          ${markets.map(m=>`<button class="market ${selected===m[0]?'selected':''}" onclick="selected='${m[0]}';render()"><span class="marketIcon">${icons[m[3]]}</span><span class="marketName">${m[0]}<small>Deriv</small></span><b>${m[1]}</b><em class="${m[3]==='up'?'green':'red'}">${m[2]}</em></button>`).join("")}
-          </section>
-          <section class="panel"><div class="panelTitle"><h3>Open Positions</h3><button>History</button></div>
-          ${[["Volatility 100 Index","BUY","$25.00","+8.40"],["Boom 1000 Index","BUY","$10.00","+4.20"],["Volatility 75 Index","SELL","$15.00","-2.80"]].map(p=>`<div class="position"><div><b>${p[0]}</b><small>${p[1]} · Stake ${p[2]}</small></div><strong class="${p[3][0]=='-'?'red':'green'}">${p[3][0]=='-'?'':'+'}$${p[3].replace("+","").replace("-","")}</strong></div>`).join("")}
-          </section>
-        </div>
-      </section>
-    </main>
-  </div>`;
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
 }
-render();
-</script>
-</body>
-</html>
+
+:root{
+  --bg:#080b10;
+  --panel:#11161d;
+  --panel2:#171d25;
+  --border:#252d38;
+  --text:#f4f7fb;
+  --muted:#8993a1;
+  --green:#16c784;
+  --green2:#0fa968;
+  --red:#ea4d68;
+  --blue:#3b82f6;
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
+  min-height:100vh;
+  padding-bottom:78px;
+}
+
+button{
+  font-family:inherit;
+  border:0;
+}
+
+.app{
+  max-width:1100px;
+  margin:auto;
+}
+
+/* TOP BAR */
+.topbar{
+  height:64px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 16px;
+  border-bottom:1px solid var(--border);
+  background:#0b0f14;
+  position:sticky;
+  top:0;
+  z-index:20;
+}
+
+.logo{
+  font-size:21px;
+  font-weight:800;
+  letter-spacing:.5px;
+}
+
+.logo span{
+  color:var(--green);
+}
+
+.top-icons{
+  display:flex;
+  gap:10px;
+}
+
+.icon-btn{
+  width:40px;
+  height:40px;
+  border-radius:12px;
+  background:var(--panel2);
+  color:white;
+  font-size:19px;
+}
+
+/* BALANCE */
+.balance{
+  margin:14px;
+  padding:20px;
+  border:1px solid var(--border);
+  border-radius:18px;
+  background:linear-gradient(145deg,#151b23,#0e131a);
+}
+
+.balance-label{
+  color:var(--muted);
+  font-size:13px;
+}
+
+.balance-value{
+  font-size:31px;
+  font-weight:800;
+  margin-top:7px;
+}
+
+.balance-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+}
+
+.profit{
+  color:var(--green);
+  font-size:14px;
+  margin-top:8px;
+}
+
+.deposit{
+  background:var(--green);
+  color:#04140d;
+  padding:11px 16px;
+  border-radius:11px;
+  font-weight:800;
+}
+
+/* MARKET */
+.section{
+  padding:0 14px;
+  margin-top:18px;
+}
+
+.section-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:12px;
+}
+
+.section-title h2{
+  font-size:18px;
+}
+
+.section-title span{
+  color:var(--muted);
+  font-size:13px;
+}
+
+.market-list{
+  display:flex;
+  gap:10px;
+  overflow-x:auto;
+  padding-bottom:4px;
+}
+
+.market-list::-webkit-scrollbar{
+  display:none;
+}
+
+.market{
+  min-width:150px;
+  padding:14px;
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:15px;
+  cursor:pointer;
+}
+
+.market.active{
+  border-color:var(--green);
+  box-shadow:0 0 0 1px rgba(22,199,132,.15);
+}
+
+.market-name{
+  font-size:12px;
+  color:var(--muted);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.market-price{
+  font-size:18px;
+  font-weight:700;
+  margin:7px 0;
+}
+
+.up{
+  color:var(--green);
+}
+
+.down{
+  color:var(--red);
+}
+
+/* CHART */
+.chart-card{
+  margin:14px;
+  padding:16px;
+  border:1px solid var(--border);
+  border-radius:18px;
+  background:var(--panel);
+}
+
+.chart-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.selected-name{
+  font-weight:700;
+}
+
+.selected-price{
+  font-size:24px;
+  font-weight:800;
+  margin-top:5px;
+}
+
+.timeframes{
+  display:flex;
+  gap:5px;
+  margin:
