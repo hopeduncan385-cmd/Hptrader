@@ -969,7 +969,751 @@ document
 
   });
 
-</script>
+<script>
 
-</body>
-  </html>
+const STARTING_BALANCE = 10000;
+
+const marketData = {
+  "Volatility 100 Index": 1284.62,
+  "Volatility 75 Index": 842.18,
+  "Volatility 50 Index": 512.44,
+  "Boom 1000 Index": 1942.08,
+  "Crash 1000 Index": 1106.72,
+  "Boom 500 Index": 734.91
+};
+
+let account = JSON.parse(
+  localStorage.getItem("hptrader_account")
+) || {
+  balance: STARTING_BALANCE,
+  positions: [],
+  history: []
+};
+
+let selectedMarket = "Volatility 100 Index";
+
+function saveAccount(){
+
+  localStorage.setItem(
+    "hptrader_account",
+    JSON.stringify(account)
+  );
+
+}
+
+
+/* =========================
+   MARKET SELECTION
+========================= */
+
+const markets =
+  document.querySelectorAll(".market");
+
+markets.forEach(function(market){
+
+  market.addEventListener("click", function(){
+
+    markets.forEach(function(item){
+      item.classList.remove("selected");
+    });
+
+    market.classList.add("selected");
+
+    selectedMarket =
+      market.dataset.name;
+
+    document.getElementById(
+      "selectedName"
+    ).textContent = selectedMarket;
+
+    updateSelectedMarket();
+
+    document.getElementById(
+      "orderMarket"
+    ).value = selectedMarket;
+
+  });
+
+});
+
+
+function updateSelectedMarket(){
+
+  const price =
+    marketData[selectedMarket];
+
+  document.getElementById(
+    "selectedPrice"
+  ).textContent =
+    price.toLocaleString(
+      undefined,
+      {
+        minimumFractionDigits:2,
+        maximumFractionDigits:2
+      }
+    );
+
+}
+
+
+/* =========================
+   PRICE DISPLAY
+========================= */
+
+function updateMarketCards(){
+
+  markets.forEach(function(card){
+
+    const name =
+      card.dataset.name;
+
+    const price =
+      marketData[name];
+
+    const priceElement =
+      card.querySelector(".market-price");
+
+    if(priceElement){
+
+      priceElement.textContent =
+        price.toLocaleString(
+          undefined,
+          {
+            minimumFractionDigits:2,
+            maximumFractionDigits:2
+          }
+        );
+
+    }
+
+  });
+
+  updateSelectedMarket();
+
+}
+
+
+/* =========================
+   SIMULATED MARKET
+========================= */
+
+function simulateMarket(){
+
+  Object.keys(marketData).forEach(function(name){
+
+    const oldPrice =
+      marketData[name];
+
+    const movement =
+      (Math.random() - 0.5) * 0.004;
+
+    marketData[name] =
+      oldPrice * (1 + movement);
+
+  });
+
+  updateMarketCards();
+
+  updatePositions();
+
+  updateAccountDisplay();
+
+}
+
+
+setInterval(
+  simulateMarket,
+  3000
+);
+
+
+/* =========================
+   OPEN TRADE
+========================= */
+
+function placeTrade(type){
+
+  const amount =
+    Number(
+      document.getElementById(
+        "amount"
+      ).value
+    );
+
+  const market =
+    document.getElementById(
+      "orderMarket"
+    ).value;
+
+  const message =
+    document.getElementById(
+      "message"
+    );
+
+  if(!amount || amount <= 0){
+
+    message.style.color =
+      "#ff5f68";
+
+    message.textContent =
+      "Enter a valid trade amount.";
+
+    return;
+
+  }
+
+
+  if(amount > account.balance){
+
+    message.style.color =
+      "#ff5f68";
+
+    message.textContent =
+      "Insufficient balance.";
+
+    return;
+
+  }
+
+
+  const entryPrice =
+    marketData[market];
+
+
+  const position = {
+
+    id:
+      Date.now(),
+
+    market:
+      market,
+
+    type:
+      type,
+
+    amount:
+      amount,
+
+    entryPrice:
+      entryPrice,
+
+    openedAt:
+      new Date().toISOString()
+
+  };
+
+
+  account.balance -= amount;
+
+  account.positions.push(
+    position
+  );
+
+  account.history.push({
+
+    action:
+      "OPEN",
+
+    type:
+      type,
+
+    market:
+      market,
+
+    amount:
+      amount,
+
+    price:
+      entryPrice,
+
+    time:
+      new Date().toISOString()
+
+  });
+
+
+  saveAccount();
+
+  updatePositions();
+
+  updateAccountDisplay();
+
+
+  message.style.color =
+    "#20d98b";
+
+  message.textContent =
+    type +
+    " order executed at " +
+    entryPrice.toFixed(2);
+
+}
+
+
+/* =========================
+   CLOSE POSITION
+========================= */
+
+function closePosition(id){
+
+  const index =
+    account.positions.findIndex(
+      function(position){
+        return position.id === id;
+      }
+    );
+
+  if(index === -1){
+    return;
+  }
+
+
+  const position =
+    account.positions[index];
+
+
+  const currentPrice =
+    marketData[position.market];
+
+
+  const priceDifference =
+    currentPrice -
+    position.entryPrice;
+
+
+  const units =
+    position.amount /
+    position.entryPrice;
+
+
+  let profitLoss =
+    priceDifference *
+    units;
+
+
+  if(position.type === "SELL"){
+
+    profitLoss =
+      -profitLoss;
+
+  }
+
+
+  const returnedAmount =
+    position.amount +
+    profitLoss;
+
+
+  account.balance +=
+    returnedAmount;
+
+
+  account.history.push({
+
+    action:
+      "CLOSE",
+
+    type:
+      position.type,
+
+    market:
+      position.market,
+
+    amount:
+      position.amount,
+
+    price:
+      currentPrice,
+
+    profitLoss:
+      profitLoss,
+
+    time:
+      new Date().toISOString()
+
+  });
+
+
+  account.positions.splice(
+    index,
+    1
+  );
+
+
+  saveAccount();
+
+  updatePositions();
+
+  updateAccountDisplay();
+
+}
+
+
+/* =========================
+   POSITION P&L
+========================= */
+
+function calculatePnL(position){
+
+  const currentPrice =
+    marketData[position.market];
+
+  const units =
+    position.amount /
+    position.entryPrice;
+
+  let pnl =
+    (currentPrice -
+    position.entryPrice) *
+    units;
+
+
+  if(position.type === "SELL"){
+
+    pnl = -pnl;
+
+  }
+
+
+  return pnl;
+
+}
+
+
+/* =========================
+   POSITIONS TABLE
+========================= */
+
+function updatePositions(){
+
+  const table =
+    document.querySelector(
+      ".positions tbody"
+    );
+
+  if(!table){
+    return;
+  }
+
+
+  table.innerHTML = "";
+
+
+  account.positions.forEach(
+    function(position){
+
+      const pnl =
+        calculatePnL(position);
+
+
+      const row =
+        document.createElement(
+          "tr"
+        );
+
+
+      row.innerHTML = `
+
+        <td>
+          ${position.market}
+        </td>
+
+        <td class="${
+          position.type === "BUY"
+          ? "green"
+          : "red"
+        }">
+
+          ${position.type}
+
+        </td>
+
+        <td>
+          $${position.amount.toFixed(2)}
+        </td>
+
+        <td>
+          ${position.entryPrice.toFixed(2)}
+        </td>
+
+        <td class="${
+          pnl >= 0
+          ? "green"
+          : "red"
+        }">
+
+          ${pnl >= 0 ? "+" : ""}
+          $${pnl.toFixed(2)}
+
+        </td>
+
+        <td>
+
+          <button
+            onclick="closePosition(${position.id})"
+            style="
+              background:#18222f;
+              color:white;
+              border:1px solid #334154;
+              padding:6px 9px;
+              border-radius:6px;
+            "
+          >
+
+            Close
+
+          </button>
+
+        </td>
+
+      `;
+
+
+      table.appendChild(row);
+
+    }
+  );
+
+}
+
+
+/* =========================
+   ACCOUNT DISPLAY
+========================= */
+
+function updateAccountDisplay(){
+
+  let unrealizedPnL = 0;
+
+
+  account.positions.forEach(
+    function(position){
+
+      unrealizedPnL +=
+        calculatePnL(position);
+
+    }
+  );
+
+
+  const equity =
+    account.balance +
+    account.positions.reduce(
+      function(total,position){
+        return total +
+          position.amount;
+      },
+      0
+    ) +
+    unrealizedPnL;
+
+
+  /* Balance */
+
+  const balanceElements =
+    document.querySelectorAll(
+      ".card-value"
+    );
+
+
+  if(balanceElements[0]){
+
+    balanceElements[0]
+      .textContent =
+      "$" +
+      equity.toLocaleString(
+        undefined,
+        {
+          minimumFractionDigits:2,
+          maximumFractionDigits:2
+        }
+      );
+
+  }
+
+
+  /* Open positions */
+
+  if(balanceElements[2]){
+
+    balanceElements[2]
+      .textContent =
+      account.positions.length;
+
+  }
+
+
+  /* Unrealized P&L */
+
+  const pnlElement =
+    document.querySelector(
+      ".account-summary-pnl"
+    );
+
+  if(pnlElement){
+
+    pnlElement.textContent =
+      (unrealizedPnL >= 0
+        ? "+"
+        : "") +
+      "$" +
+      unrealizedPnL.toFixed(2);
+
+  }
+
+
+  const balanceBox =
+    document.querySelector(
+      ".balance b"
+    );
+
+  if(balanceBox){
+
+    balanceBox.textContent =
+      "$" +
+      equity.toLocaleString(
+        undefined,
+        {
+          minimumFractionDigits:2,
+          maximumFractionDigits:2
+        }
+      );
+
+  }
+
+}
+
+
+/* =========================
+   TIMEFRAMES
+========================= */
+
+const timeframeButtons =
+  document.querySelectorAll(
+    ".timeframes button"
+  );
+
+
+timeframeButtons.forEach(
+  function(button){
+
+    button.addEventListener(
+      "click",
+      function(){
+
+        timeframeButtons.forEach(
+          function(item){
+            item.classList.remove(
+              "active"
+            );
+          }
+        );
+
+        button.classList.add(
+          "active"
+        );
+
+      }
+    );
+
+  }
+);
+
+
+/* =========================
+   SEARCH
+========================= */
+
+const search =
+  document.getElementById(
+    "search"
+  );
+
+
+search.addEventListener(
+  "input",
+  function(){
+
+    const query =
+      search.value.toLowerCase();
+
+
+    markets.forEach(
+      function(market){
+
+        const name =
+          market.dataset.name
+          .toLowerCase();
+
+
+        market.style.display =
+          name.includes(query)
+          ? "block"
+          : "none";
+
+      }
+    );
+
+  }
+);
+
+
+/* =========================
+   MARKET / LIMIT
+========================= */
+
+document
+  .getElementById("marketBtn")
+  .addEventListener(
+    "click",
+    function(){
+
+      this.classList.add(
+        "active"
+      );
+
+      document
+        .getElementById(
+          "limitBtn"
+        )
+        .classList.remove(
+          "active"
+        );
+
+    }
+  );
+
+
+document
+  .getElementById("limitBtn")
+  .addEventListener(
+    "click",
+    function(){
+
+      this.classList.add(
+        "active"
+      );
+
+      document
+        .getElementById(
+          "marketBtn"
+        )
+        .classList.remove(
+          "active"
+        );
+
+    }
+  );
+
+
+/* =========================
+   START
+========================= */
+
+updateMarketCards();
+
+updatePositions();
+
+updateAccountDisplay();
+
+</script>
