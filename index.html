@@ -969,7 +969,483 @@ document
 
   });
 
-</script>
+<script>
+
+const STARTING_BALANCE = 10000;
+
+const marketData = {
+  "Volatility 100 Index": 1284.62,
+  "Volatility 75 Index": 842.18,
+  "Volatility 50 Index": 512.44,
+  "Boom 1000 Index": 1942.08,
+  "Crash 1000 Index": 1106.72,
+  "Boom 500 Index": 734.91
+};
+
+let account = JSON.parse(
+  localStorage.getItem("hptrader_account")
+) || {
+  balance: STARTING_BALANCE,
+  positions: [],
+  history: []
+};
+
+let selectedMarket = "Volatility 100 Index";
+
+
+function saveAccount() {
+  localStorage.setItem(
+    "hptrader_account",
+    JSON.stringify(account)
+  );
+}
+
+
+/* MARKET SELECTION */
+
+const marketCards =
+  document.querySelectorAll(".market");
+
+marketCards.forEach(function(card) {
+
+  card.addEventListener("click", function() {
+
+    marketCards.forEach(function(item) {
+      item.classList.remove("selected");
+    });
+
+    card.classList.add("selected");
+
+    selectedMarket =
+      card.dataset.name;
+
+    document.getElementById(
+      "selectedName"
+    ).textContent = selectedMarket;
+
+    document.getElementById(
+      "orderMarket"
+    ).value = selectedMarket;
+
+    updateSelectedPrice();
+  });
+
+});
+
+
+function updateSelectedPrice() {
+
+  const price =
+    marketData[selectedMarket];
+
+  document.getElementById(
+    "selectedPrice"
+  ).textContent =
+    price.toLocaleString(
+      undefined,
+      {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }
+    );
+}
+
+
+/* UPDATE MARKET PRICES */
+
+function updateMarketCards() {
+
+  marketCards.forEach(function(card) {
+
+    const name =
+      card.dataset.name;
+
+    const price =
+      marketData[name];
+
+    const priceElement =
+      card.querySelector(".market-price");
+
+    if (priceElement) {
+
+      priceElement.textContent =
+        price.toLocaleString(
+          undefined,
+          {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+          }
+        );
+    }
+
+  });
+
+  updateSelectedPrice();
+}
+
+
+/* SIMULATED PRICE MOVEMENT */
+
+function simulateMarket() {
+
+  Object.keys(marketData).forEach(
+    function(name) {
+
+      const movement =
+        (Math.random() - 0.5) * 0.004;
+
+      marketData[name] =
+        marketData[name] *
+        (1 + movement);
+
+    }
+  );
+
+  updateMarketCards();
+  updatePositions();
+  updateAccountDisplay();
+}
+
+
+setInterval(
+  simulateMarket,
+  3000
+);
+
+
+/* BUY / SELL */
+
+function placeTrade(type) {
+
+  const amount =
+    Number(
+      document.getElementById(
+        "amount"
+      ).value
+    );
+
+  const market =
+    document.getElementById(
+      "orderMarket"
+    ).value;
+
+  const message =
+    document.getElementById(
+      "message"
+    );
+
+  if (!amount || amount <= 0) {
+
+    message.style.color =
+      "#ff5f68";
+
+    message.textContent =
+      "Enter a valid amount.";
+
+    return;
+  }
+
+
+  if (amount > account.balance) {
+
+    message.style.color =
+      "#ff5f68";
+
+    message.textContent =
+      "Insufficient balance.";
+
+    return;
+  }
+
+
+  const entryPrice =
+    marketData[market];
+
+
+  const position = {
+
+    id: Date.now(),
+
+    market: market,
+
+    type: type,
+
+    amount: amount,
+
+    entryPrice: entryPrice,
+
+    openedAt:
+      new Date().toISOString()
+
+  };
+
+
+  account.balance -= amount;
+
+  account.positions.push(
+    position
+  );
+
+
+  account.history.push({
+
+    action: "OPEN",
+
+    type: type,
+
+    market: market,
+
+    amount: amount,
+
+    price: entryPrice,
+
+    time:
+      new Date().toISOString()
+
+  });
+
+
+  saveAccount();
+
+  updatePositions();
+  updateAccountDisplay();
+
+
+  message.style.color =
+    "#20d98b";
+
+  message.textContent =
+    type +
+    " order executed at " +
+    entryPrice.toFixed(2);
+
+}
+
+
+/* CALCULATE PROFIT / LOSS */
+
+function calculatePnL(position) {
+
+  const currentPrice =
+    marketData[position.market];
+
+  const units =
+    position.amount /
+    position.entryPrice;
+
+  let pnl =
+    (currentPrice -
+      position.entryPrice) *
+    units;
+
+
+  if (position.type === "SELL") {
+    pnl = -pnl;
+  }
+
+
+  return pnl;
+}
+
+
+/* CLOSE POSITION */
+
+function closePosition(id) {
+
+  const index =
+    account.positions.findIndex(
+      function(position) {
+        return position.id === id;
+      }
+    );
+
+
+  if (index === -1) {
+    return;
+  }
+
+
+  const position =
+    account.positions[index];
+
+
+  const pnl =
+    calculatePnL(position);
+
+
+  const returnedAmount =
+    position.amount + pnl;
+
+
+  account.balance +=
+    returnedAmount;
+
+
+  account.history.push({
+
+    action: "CLOSE",
+
+    type: position.type,
+
+    market: position.market,
+
+    amount: position.amount,
+
+    price:
+      marketData[position.market],
+
+    profitLoss: pnl,
+
+    time:
+      new Date().toISOString()
+
+  });
+
+
+  account.positions.splice(
+    index,
+    1
+  );
+
+
+  saveAccount();
+
+  updatePositions();
+  updateAccountDisplay();
+
+}
+
+
+/* OPEN POSITIONS TABLE */
+
+function updatePositions() {
+
+  const table =
+    document.querySelector(
+      ".positions tbody"
+    );
+
+
+  if (!table) {
+    return;
+  }
+
+
+  const header =
+    document.querySelector(
+      ".positions thead tr"
+    );
+
+
+  /* Add Action column */
+
+  if (
+    header &&
+    !header.querySelector(
+      ".action-header"
+    )
+  ) {
+
+    const th =
+      document.createElement("th");
+
+    th.textContent = "Action";
+
+    th.className =
+      "action-header";
+
+    header.appendChild(th);
+  }
+
+
+  table.innerHTML = "";
+
+
+  account.positions.forEach(
+    function(position) {
+
+      const pnl =
+        calculatePnL(position);
+
+
+      const row =
+        document.createElement("tr");
+
+
+      row.innerHTML = `
+
+        <td>
+          ${position.market}
+        </td>
+
+        <td class="${
+          position.type === "BUY"
+          ? "green"
+          : "red"
+        }">
+
+          ${position.type}
+
+        </td>
+
+        <td>
+          $${position.amount.toFixed(2)}
+        </td>
+
+        <td>
+          ${position.entryPrice.toFixed(2)}
+        </td>
+
+        <td class="${
+          pnl >= 0
+          ? "green"
+          : "red"
+        }">
+
+          ${pnl >= 0 ? "+" : ""}
+          $${pnl.toFixed(2)}
+
+        </td>
+
+        <td>
+
+          <button
+            onclick="closePosition(${position.id})"
+            style="
+              background:#18222f;
+              color:white;
+              border:1px solid #334154;
+              padding:7px 12px;
+              border-radius:7px;
+              cursor:pointer;
+            "
+          >
+
+            Close
+
+          </button>
+
+        </td>
+
+      `;
+
+
+      table.appendChild(row);
+
+    }
+  );
+
+}
+
+
+/* ACCOUNT */
+
+function updateAccountDisplay() {
+
+  let unrealizedPnL = 0;
+
+
+  account.positions
 
 </body>
   </html>
