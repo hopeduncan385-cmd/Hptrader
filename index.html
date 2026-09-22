@@ -12,205 +12,244 @@
   padding:0;
 }
 
-:root{
-  --bg:#080b10;
-  --panel:#11161d;
-  --panel2:#171d25;
-  --border:#252d38;
-  --text:#f4f7fb;
-  --muted:#8993a1;
-  --green:#16c784;
-  --green2:#0fa968;
-  --red:#ea4d68;
-  --blue:#3b82f6;
-}
-
 body{
-  background:var(--bg);
-  color:var(--text);
   font-family:Arial,Helvetica,sans-serif;
-  min-height:100vh;
-  padding-bottom:78px;
+  background:#070b12;
+  color:#f4f7fb;
 }
 
 button{
-  font-family:inherit;
-  border:0;
+  font:inherit;
+  cursor:pointer;
 }
 
 .app{
-  max-width:1100px;
-  margin:auto;
+  min-height:100vh;
+  display:flex;
+}
+
+/* SIDEBAR */
+.sidebar{
+  width:230px;
+  background:#0b1018;
+  border-right:1px solid #1d2633;
+  padding:20px 14px;
+  position:fixed;
+  top:0;
+  bottom:0;
+}
+
+.logo{
+  font-size:22px;
+  font-weight:800;
+  padding:8px 12px 28px;
+  color:#fff;
+}
+
+.logo span{
+  color:#20d98b;
+}
+
+.nav-title{
+  color:#6e7b8d;
+  font-size:11px;
+  margin:15px 12px 8px;
+  text-transform:uppercase;
+}
+
+.nav button{
+  width:100%;
+  border:0;
+  background:transparent;
+  color:#9aa7b7;
+  padding:12px;
+  text-align:left;
+  border-radius:10px;
+  margin-bottom:4px;
+}
+
+.nav button:hover,
+.nav button.active{
+  background:#151e2a;
+  color:#fff;
+}
+
+.main{
+  margin-left:230px;
+  width:calc(100% - 230px);
 }
 
 /* TOP BAR */
 .topbar{
-  height:64px;
+  height:70px;
+  border-bottom:1px solid #1d2633;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 16px;
-  border-bottom:1px solid var(--border);
-  background:#0b0f14;
-  position:sticky;
-  top:0;
-  z-index:20;
+  padding:0 25px;
+  background:#090e16;
 }
 
-.logo{
-  font-size:21px;
-  font-weight:800;
-  letter-spacing:.5px;
-}
-
-.logo span{
-  color:var(--green);
-}
-
-.top-icons{
-  display:flex;
-  gap:10px;
-}
-
-.icon-btn{
-  width:40px;
-  height:40px;
-  border-radius:12px;
-  background:var(--panel2);
+.search{
+  background:#111823;
+  border:1px solid #202b39;
+  border-radius:9px;
+  padding:11px 15px;
+  width:280px;
   color:white;
-  font-size:19px;
+  outline:none;
 }
 
-/* BALANCE */
-.balance{
-  margin:14px;
-  padding:20px;
-  border:1px solid var(--border);
-  border-radius:18px;
-  background:linear-gradient(145deg,#151b23,#0e131a);
-}
-
-.balance-label{
-  color:var(--muted);
-  font-size:13px;
-}
-
-.balance-value{
-  font-size:31px;
-  font-weight:800;
-  margin-top:7px;
-}
-
-.balance-row{
+.account{
   display:flex;
-  justify-content:space-between;
-  align-items:end;
+  align-items:center;
+  gap:12px;
 }
 
-.profit{
-  color:var(--green);
-  font-size:14px;
-  margin-top:8px;
+.balance{
+  background:#111923;
+  border:1px solid #263242;
+  padding:9px 13px;
+  border-radius:9px;
 }
 
-.deposit{
-  background:var(--green);
-  color:#04140d;
-  padding:11px 16px;
-  border-radius:11px;
-  font-weight:800;
+.avatar{
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  background:#20d98b;
+  color:#06110c;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+}
+
+/* CONTENT */
+.content{
+  padding:24px;
+}
+
+.welcome{
+  margin-bottom:22px;
+}
+
+.welcome h1{
+  font-size:25px;
+  margin-bottom:6px;
+}
+
+.welcome p{
+  color:#788697;
+}
+
+/* STAT CARDS */
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:15px;
+  margin-bottom:22px;
+}
+
+.card{
+  background:#0e151f;
+  border:1px solid #202b39;
+  border-radius:14px;
+  padding:18px;
+}
+
+.card-label{
+  color:#7c8999;
+  font-size:13px;
+  margin-bottom:10px;
+}
+
+.card-value{
+  font-size:24px;
+  font-weight:700;
+}
+
+.green{
+  color:#20d98b;
+}
+
+.red{
+  color:#ff5f68;
+}
+
+/* GRID */
+.dashboard{
+  display:grid;
+  grid-template-columns:2fr 1fr;
+  gap:18px;
 }
 
 /* MARKET */
-.section{
-  padding:0 14px;
-  margin-top:18px;
-}
-
-.section-title{
+.market-header{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:12px;
+  margin-bottom:15px;
 }
 
-.section-title h2{
+.market-header h2{
   font-size:18px;
 }
 
-.section-title span{
-  color:var(--muted);
-  font-size:13px;
-}
-
-.market-list{
-  display:flex;
-  gap:10px;
-  overflow-x:auto;
-  padding-bottom:4px;
-}
-
-.market-list::-webkit-scrollbar{
-  display:none;
+.market-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
 }
 
 .market{
-  min-width:150px;
-  padding:14px;
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:15px;
+  border:1px solid #202b39;
+  background:#0d141d;
+  border-radius:12px;
+  padding:15px;
   cursor:pointer;
+  transition:.2s;
 }
 
-.market.active{
-  border-color:var(--green);
-  box-shadow:0 0 0 1px rgba(22,199,132,.15);
+.market:hover,
+.market.selected{
+  border-color:#20d98b;
+  background:#101a22;
 }
 
 .market-name{
-  font-size:12px;
-  color:var(--muted);
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
+  font-size:14px;
+  color:#c7d0dc;
+  margin-bottom:13px;
 }
 
 .market-price{
-  font-size:18px;
-  font-weight:700;
-  margin:7px 0;
+  font-size:20px;
+  font-weight:bold;
+  margin-bottom:5px;
 }
 
-.up{
-  color:var(--green);
-}
-
-.down{
-  color:var(--red);
+.market-change{
+  font-size:13px;
 }
 
 /* CHART */
 .chart-card{
-  margin:14px;
-  padding:16px;
-  border:1px solid var(--border);
-  border-radius:18px;
-  background:var(--panel);
+  margin-top:18px;
 }
 
-.chart-header{
+.chart-top{
   display:flex;
   justify-content:space-between;
   align-items:center;
 }
 
-.selected-name{
-  font-weight:700;
+.chart-name{
+  font-weight:bold;
 }
 
-.selected-price{
-  font-size:24px;
+.chart-price{
+  font-size:23px;
   font-weight:800;
   margin-top:5px;
 }
@@ -218,4 +257,719 @@ button{
 .timeframes{
   display:flex;
   gap:5px;
-  margin:
+}
+
+.timeframes button{
+  border:0;
+  background:#18222f;
+  color:#8491a1;
+  padding:7px 10px;
+  border-radius:7px;
+}
+
+.timeframes button.active{
+  background:#20d98b;
+  color:#06110c;
+}
+
+.chart{
+  height:280px;
+  margin-top:18px;
+  border:1px solid #1b2632;
+  border-radius:10px;
+  background:
+    linear-gradient(#17202b 1px,transparent 1px),
+    linear-gradient(90deg,#17202b 1px,transparent 1px);
+  background-size:50px 50px;
+  position:relative;
+  overflow:hidden;
+}
+
+.chart svg{
+  width:100%;
+  height:100%;
+}
+
+.line{
+  fill:none;
+  stroke:#20d98b;
+  stroke-width:3;
+}
+
+/* ORDER PANEL */
+.order-panel h2{
+  font-size:18px;
+  margin-bottom:18px;
+}
+
+.order-type{
+  display:flex;
+  gap:8px;
+  margin-bottom:18px;
+}
+
+.order-type button{
+  flex:1;
+  padding:10px;
+  border:1px solid #273343;
+  background:#121b26;
+  color:#9aa7b7;
+  border-radius:8px;
+}
+
+.order-type button.active{
+  background:#20d98b;
+  color:#06110c;
+  border-color:#20d98b;
+}
+
+.field{
+  margin-bottom:15px;
+}
+
+.field label{
+  display:block;
+  color:#7d8998;
+  font-size:12px;
+  margin-bottom:7px;
+}
+
+.field input{
+  width:100%;
+  padding:12px;
+  background:#0a1119;
+  border:1px solid #263241;
+  color:white;
+  border-radius:8px;
+  outline:none;
+}
+
+.trade-buttons{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:20px;
+}
+
+.buy,
+.sell{
+  border:0;
+  padding:13px;
+  border-radius:8px;
+  font-weight:bold;
+}
+
+.buy{
+  background:#20d98b;
+  color:#06110c;
+}
+
+.sell{
+  background:#ff5f68;
+  color:white;
+}
+
+/* POSITIONS */
+.positions{
+  margin-top:18px;
+}
+
+.positions table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+.positions th,
+.positions td{
+  padding:13px 10px;
+  text-align:left;
+  border-bottom:1px solid #1b2531;
+  font-size:13px;
+}
+
+.positions th{
+  color:#697789;
+  font-weight:normal;
+}
+
+/* MOBILE */
+@media(max-width:900px){
+  .sidebar{
+    width:70px;
+    padding:15px 8px;
+  }
+
+  .logo{
+    font-size:0;
+    text-align:center;
+  }
+
+  .logo span{
+    font-size:20px;
+  }
+
+  .nav-title{
+    display:none;
+  }
+
+  .nav button{
+    font-size:0;
+    text-align:center;
+  }
+
+  .nav button::first-letter{
+    font-size:18px;
+  }
+
+  .main{
+    margin-left:70px;
+    width:calc(100% - 70px);
+  }
+
+  .stats{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .dashboard{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:600px){
+  .topbar{
+    padding:0 12px;
+  }
+
+  .search{
+    width:150px;
+  }
+
+  .content{
+    padding:14px;
+  }
+
+  .stats{
+    grid-template-columns:1fr 1fr;
+    gap:9px;
+  }
+
+  .card{
+    padding:13px;
+  }
+
+  .card-value{
+    font-size:18px;
+  }
+
+  .market-grid{
+    grid-template-columns:1fr;
+  }
+
+  .chart{
+    height:220px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <aside class="sidebar">
+
+    <div class="logo">
+      HP<span>TRADER</span>
+    </div>
+
+    <div class="nav-title">Main</div>
+
+    <div class="nav">
+      <button class="active">📊 Dashboard</button>
+      <button>📈 Markets</button>
+      <button>💼 Portfolio</button>
+      <button>📋 Orders</button>
+      <button>💰 Transactions</button>
+    </div>
+
+    <div class="nav-title">Account</div>
+
+    <div class="nav">
+      <button>⚙️ Settings</button>
+      <button>❓ Help</button>
+    </div>
+
+  </aside>
+
+  <main class="main">
+
+    <header class="topbar">
+
+      <input
+        class="search"
+        placeholder="Search markets..."
+        id="search"
+      >
+
+      <div class="account">
+        <div class="balance">
+          Balance: <b>$10,000.00</b>
+        </div>
+
+        <div class="avatar">D</div>
+      </div>
+
+    </header>
+
+    <section class="content">
+
+      <div class="welcome">
+        <h1>Trading Dashboard</h1>
+        <p>Welcome to HPTRADER. Trade markets using your paper account.</p>
+      </div>
+
+      <div class="stats">
+
+        <div class="card">
+          <div class="card-label">Account Balance</div>
+          <div class="card-value">$10,000.00</div>
+        </div>
+
+        <div class="card">
+          <div class="card-label">Today's P&L</div>
+          <div class="card-value green">+$248.52</div>
+        </div>
+
+        <div class="card">
+          <div class="card-label">Open Positions</div>
+          <div class="card-value">4</div>
+        </div>
+
+        <div class="card">
+          <div class="card-label">Total Return</div>
+          <div class="card-value green">+4.82%</div>
+        </div>
+
+      </div>
+
+      <div class="dashboard">
+
+        <div>
+
+          <div class="card">
+
+            <div class="market-header">
+              <h2>Markets</h2>
+              <span style="color:#20d98b;font-size:12px">
+                ● Live
+              </span>
+            </div>
+
+            <div class="market-grid" id="markets">
+
+              <div class="market selected" data-name="Volatility 100 Index">
+                <div class="market-name">Volatility 100 Index</div>
+                <div class="market-price">1,284.62</div>
+                <div class="market-change green">↗ +1.24%</div>
+              </div>
+
+              <div class="market" data-name="Volatility 75 Index">
+                <div class="market-name">Volatility 75 Index</div>
+                <div class="market-price">842.18</div>
+                <div class="market-change green">↗ +0.87%</div>
+              </div>
+
+              <div class="market" data-name="Volatility 50 Index">
+                <div class="market-name">Volatility 50 Index</div>
+                <div class="market-price">512.44</div>
+                <div class="market-change red">↘ -0.31%</div>
+              </div>
+
+              <div class="market" data-name="Boom 1000 Index">
+                <div class="market-name">Boom 1000 Index</div>
+                <div class="market-price">1,942.08</div>
+                <div class="market-change green">↗ +2.18%</div>
+              </div>
+
+              <div class="market" data-name="Crash 1000 Index">
+                <div class="market-name">Crash 1000 Index</div>
+                <div class="market-price">1,106.72</div>
+                <div class="market-change red">↘ -1.05%</div>
+              </div>
+
+              <div class="market" data-name="Boom 500 Index">
+                <div class="market-name">Boom 500 Index</div>
+                <div class="market-price">734.91</div>
+                <div class="market-change green">↗ +0.64%</div>
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="card chart-card">
+
+            <div class="chart-top">
+
+              <div>
+                <div class="chart-name" id="selectedName">
+                  Volatility 100 Index
+                </div>
+
+                <div class="chart-price" id="selectedPrice">
+                  1,284.62
+                </div>
+              </div>
+
+              <div class="timeframes">
+                <button>1m</button>
+                <button>5m</button>
+                <button class="active">15m</button>
+                <button>1H</button>
+                <button>1D</button>
+              </div>
+
+            </div>
+
+            <div class="chart">
+
+              <svg viewBox="0 0 800 280" preserveAspectRatio="none">
+
+                <polyline
+                  class="line"
+                  points="
+                  0,210
+                  40,195
+                  80,210
+                  120,175
+                  160,185
+                  200,145
+                  240,165
+                  280,125
+                  320,140
+                  360,100
+                  400,120
+                  440,80
+                  480,105
+                  520,70
+                  560,90
+                  600,55
+                  640,72
+                  680,45
+                  720,62
+                  760,30
+                  800,48
+                  "
+                />
+
+              </svg>
+
+            </div>
+
+          </div>
+
+          <div class="card positions">
+
+            <div class="market-header">
+              <h2>Open Positions</h2>
+              <span style="color:#718092;font-size:12px">
+                4 positions
+              </span>
+            </div>
+
+            <table>
+
+              <thead>
+                <tr>
+                  <th>Market</th>
+                  <th>Type</th>
+                  <th>Size</th>
+                  <th>Entry</th>
+                  <th>P&L</th>
+                </tr>
+              </thead>
+
+              <tbody>
+
+                <tr>
+                  <td>Volatility 100</td>
+                  <td class="green">BUY</td>
+                  <td>0.50</td>
+                  <td>1,276.40</td>
+                  <td class="green">+$41.10</td>
+                </tr>
+
+                <tr>
+                  <td>Boom 1000</td>
+                  <td class="green">BUY</td>
+                  <td>0.25</td>
+                  <td>1,932.10</td>
+                  <td class="green">+$24.80</td>
+                </tr>
+
+                <tr>
+                  <td>Crash 1000</td>
+                  <td class="red">SELL</td>
+                  <td>0.20</td>
+                  <td>1,098.20</td>
+                  <td class="red">-$8.30</td>
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+        <div>
+
+          <div class="card order-panel">
+
+            <h2>Place Order</h2>
+
+            <div class="order-type">
+              <button class="active" id="marketBtn">
+                Market
+              </button>
+
+              <button id="limitBtn">
+                Limit
+              </button>
+            </div>
+
+            <div class="field">
+              <label>MARKET</label>
+
+              <input
+                id="orderMarket"
+                value="Volatility 100 Index"
+                readonly
+              >
+            </div>
+
+            <div class="field">
+              <label>AMOUNT</label>
+
+              <input
+                type="number"
+                id="amount"
+                value="100"
+                min="1"
+              >
+            </div>
+
+            <div class="field">
+              <label>STOP LOSS</label>
+
+              <input
+                type="number"
+                placeholder="Optional"
+              >
+            </div>
+
+            <div class="field">
+              <label>TAKE PROFIT</label>
+
+              <input
+                type="number"
+                placeholder="Optional"
+              >
+            </div>
+
+            <div class="trade-buttons">
+
+              <button class="buy" onclick="placeTrade('BUY')">
+                BUY
+              </button>
+
+              <button class="sell" onclick="placeTrade('SELL')">
+                SELL
+              </button>
+
+            </div>
+
+            <div
+              id="message"
+              style="
+              margin-top:15px;
+              text-align:center;
+              color:#20d98b;
+              font-size:13px;
+              "
+            ></div>
+
+          </div>
+
+          <div class="card" style="margin-top:18px">
+
+            <div class="market-header">
+              <h2>Account Summary</h2>
+            </div>
+
+            <div style="display:flex;justify-content:space-between;margin:12px 0">
+              <span style="color:#7d8998">Available</span>
+              <b>$10,000.00</b>
+            </div>
+
+            <div style="display:flex;justify-content:space-between;margin:12px 0">
+              <span style="color:#7d8998">Used Margin</span>
+              <b>$1,240.00</b>
+            </div>
+
+            <div style="display:flex;justify-content:space-between;margin:12px 0">
+              <span style="color:#7d8998">Unrealized P&L</span>
+              <b class="green">+$57.60</b>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+<script>
+
+const markets = document.querySelectorAll(".market");
+
+const selectedName =
+  document.getElementById("selectedName");
+
+const selectedPrice =
+  document.getElementById("selectedPrice");
+
+const orderMarket =
+  document.getElementById("orderMarket");
+
+markets.forEach(function(market){
+
+  market.addEventListener("click",function(){
+
+    markets.forEach(function(item){
+      item.classList.remove("selected");
+    });
+
+    market.classList.add("selected");
+
+    const name =
+      market.querySelector(".market-name").textContent;
+
+    const price =
+      market.querySelector(".market-price").textContent;
+
+    selectedName.textContent = name;
+
+    selectedPrice.textContent = price;
+
+    orderMarket.value = name;
+
+  });
+
+});
+
+
+const timeframeButtons =
+  document.querySelectorAll(".timeframes button");
+
+timeframeButtons.forEach(function(button){
+
+  button.addEventListener("click",function(){
+
+    timeframeButtons.forEach(function(item){
+      item.classList.remove("active");
+    });
+
+    button.classList.add("active");
+
+  });
+
+});
+
+
+function placeTrade(type){
+
+  const amount =
+    document.getElementById("amount").value;
+
+  const market =
+    document.getElementById("orderMarket").value;
+
+  const message =
+    document.getElementById("message");
+
+  if(!amount || Number(amount) <= 0){
+
+    message.style.color = "#ff5f68";
+
+    message.textContent =
+      "Enter a valid amount.";
+
+    return;
+  }
+
+  message.style.color = "#20d98b";
+
+  message.textContent =
+    type + " order placed: $" +
+    amount + " on " + market;
+
+}
+
+
+const search =
+  document.getElementById("search");
+
+search.addEventListener("input",function(){
+
+  const query =
+    search.value.toLowerCase();
+
+  markets.forEach(function(market){
+
+    const name =
+      market.dataset.name.toLowerCase();
+
+    market.style.display =
+      name.includes(query) ? "block" : "none";
+
+  });
+
+});
+
+
+document
+  .getElementById("marketBtn")
+  .addEventListener("click",function(){
+
+    this.classList.add("active");
+
+    document
+      .getElementById("limitBtn")
+      .classList.remove("active");
+
+  });
+
+
+document
+  .getElementById("limitBtn")
+  .addEventListener("click",function(){
+
+    this.classList.add("active");
+
+    document
+      .getElementById("marketBtn")
+      .classList.remove("active");
+
+  });
+
+</script>
+
+</body>
+  </html>
